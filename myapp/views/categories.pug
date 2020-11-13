@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  p Bienvenidos to #{title}
+  ul
+  each val in categories
+      li= val

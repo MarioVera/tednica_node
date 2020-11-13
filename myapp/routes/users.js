@@ -1,14 +1,34 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.send('respondo con algo');
+const { serviceSiteMLB, serviceSiteMLA } = require('../services');
+const { fetchData } = require('../middlewares');
+
+router.get('/', function(req, res) {
+  res.send('response con algo');
 });
 
-router.get('/sites', function(req, res, next) {
+router.get('/site/MLA', async function (req, res) {
+  let result = await serviceSiteMLA();
+  res.json(result);
+  res.end();
 
-  const response = { a:1,b:2};
-  res.json(response);
+});
+
+router.get('/site/MLB', async function (req, res) {
+  let result = await serviceSiteMLB();
+  res.json(result);
+  res.end();
+
+});
+
+router.get('/site/MLA/categories', fetchData, (req, res) =>{
+
+  const categoriesName = req.initialData.categories.map(e=> e.name);
+
+  res.render('categories', { title: 'Categories MLA', categories: categoriesName});
+  res.end();
 });
 
 module.exports = router;
+
